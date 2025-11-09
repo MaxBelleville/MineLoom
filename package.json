@@ -1,0 +1,26 @@
+{
+  "name": "mccscript",
+  "version": "1.0.0",
+  "description": "Anothe minecraft datapack scripting language",
+  "main": "src/parser.ts",
+  "author": "Max Belleville",
+  "license": "MIT",
+  "type": "module",
+  "scripts": {
+    "build": "nearleyc src/grammar/root.ne --out src/grammar/module.ts && tsc",
+    "parse": "node src/parser.ts",
+    "dev": "yarn build && node src/parser.ts"
+  },
+  "dependencies": {
+    "adm-zip": "^0.5.16",
+    "moo": "^0.5.2",
+    "nearley": "^2.20.1"
+  },
+  "devDependencies": {
+    "@types/adm-zip": "^0.5.7",
+    "@types/moo": "^0.5.10",
+    "@types/nearley": "^2.11.5",
+    "@types/node": "^24.10.0",
+    "typescript": "^5.9.3"
+  }
+}
