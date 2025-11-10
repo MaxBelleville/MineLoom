@@ -1,18 +1,43 @@
 @preprocessor typescript
 @{%
-import { lexer } from '../lexer.ts'
+import loom_lexer from '../lexer.ts';
+import * as post from '../postProcessor.ts' 
 %}
-@lexer lexer
+@lexer loom_lexer
 
-statement
-    -> var_assign 
+@include "directives.ne"
+@include "func.ne"
+@include "expr.ne"
+
+
+prog_statements
+  -> _ws prog_statement {% data => [data[1]] %}
+  | prog_statements __nl prog_statement {% data => [...data[0],data[2]] %}
+
+#Statements that are specific to the file level, includes func def, directive handling and more
+prog_statement
+    -> directives {% id %}
+    |  func_def {% id %}
+    
+#Statements that are specific to the function/conditional level, includes command proccessing variable assignment and more.
+sub_statements
+  -> _ws sub_statement {% data => [data[1]] %}
+  | sub_statements __nl sub_statement {% data => [...data[0],data[2]] %}
+
+sub_statement
+    -> var_assign {% id %}
 
 var_assign
-    -> %iden _ "=" _ expr
+    -> %iden _ "=" _ bin_expr {% post.varAssign %}
 
-expr
-    -> %str
-    | %num
-    | %bool
+# Does both doesn't care about spacing at all
+_ -> (%ws | %nl):* {% () => null %}
+__ -> (%ws | %nl):+ {% () => null %}
 
-_ -> %ws:*
+# Skip new line
+_nl   -> %nl:*  {% () => null  %}
+__nl -> %nl:+  {% () => null %}
+
+# Skip only white space
+_ws -> %ws:* {% () => null %}
+__ws -> %ws:+ {% () => null %}

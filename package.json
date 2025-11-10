@@ -12,12 +12,10 @@
     "dev": "yarn build && node src/parser.ts"
   },
   "dependencies": {
-    "adm-zip": "^0.5.16",
     "moo": "^0.5.2",
     "nearley": "^2.20.1"
   },
   "devDependencies": {
-    "@types/adm-zip": "^0.5.7",
     "@types/moo": "^0.5.10",
     "@types/nearley": "^2.11.5",
     "@types/node": "^24.10.0",
